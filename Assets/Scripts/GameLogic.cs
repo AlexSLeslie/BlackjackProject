@@ -57,6 +57,12 @@ public class GameLogic: MonoBehaviour
     }
 
     void StartRound(){
-        // Start with dealing cards, one needs to be face down
+        for(int i=0; i<2; ++i){
+            playerHand.Add(deck.Pop());
+            dealerHand.Add(deck.Pop());
+        }
+
+        // TODO: Dealer's second card must appear facedown
+        
     }
 }

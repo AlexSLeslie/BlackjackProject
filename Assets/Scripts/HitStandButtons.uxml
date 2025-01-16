@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Button text="Hit" name="HitButton" style="width: 40%; align-self: flex-start; position: absolute; justify-content: center; bottom: 50%; height: 100px; align-items: auto;" />
+    <ui:Button text="Stand" name="StandButton" style="width: 40%; right: auto; align-self: flex-end; position: absolute; justify-content: center; align-content: flex-start; align-items: auto; bottom: 50%; height: 100px;" />
+</ui:UXML>
