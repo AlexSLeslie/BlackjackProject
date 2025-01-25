@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -26,8 +27,8 @@ public class ButtonHandler : MonoBehaviour
         TestRoot.Q<Button>("TestButton").clicked += () => OnButtonClick(TestRoot.Q<Button>("TestButton"));
         roots.Add(Root.TEST, TestRoot);
 
-
-        HideElement(TestRoot);
+        foreach(VisualElement visualElement in roots.Values.ToList())
+            HideElement(visualElement);
 
     }
 

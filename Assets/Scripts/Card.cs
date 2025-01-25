@@ -13,11 +13,15 @@ public class Card
     private Suit _suit;
     private int _rank;
     private Sprite _image;
+    private bool _faceup;
+
+    private string cardBack = "Cards/back";
 
 
     public Card(Suit s, int r){
             _suit = s;
             _rank = r;
+            _faceup = true;
 
             _image = Resources.Load<Sprite>(imagePath());
         }
@@ -26,7 +30,14 @@ public class Card
     public Suit suit{ get => _suit; set => _suit = value; }
     public int rank { get => _rank; set => _rank = value; }
     public Sprite image { get => _image; set => _image = value; }
+    
+    public void faceup(bool isFaceup){
+        _faceup = isFaceup;
+        _image = _faceup? Resources.Load<Sprite>(imagePath()) : Resources.Load<Sprite>(cardBack);
 
+    }
+
+    // Image source https://code.google.com/archive/p/vector-playing-cards/ 
     public string imagePath(){
 
         string s = "Cards/";

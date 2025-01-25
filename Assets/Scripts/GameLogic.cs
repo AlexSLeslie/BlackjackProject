@@ -12,7 +12,9 @@ public class GameLogic: MonoBehaviour
     public GameObject cardPrefab;
     public GameObject playerHandObject;
     public GameObject dealerHandObject;
+    public GameObject buttonHandlerObject;
 
+    private ButtonHandler buttonHandler;
 
     public int chips;
 
@@ -21,6 +23,8 @@ public class GameLogic: MonoBehaviour
         deck = new Stack<Card>();
         playerHand = new List<Card>();
         dealerHand = new List<Card>();
+
+        buttonHandler = buttonHandlerObject.GetComponent<ButtonHandler>();
 
         chips = 500;
 
@@ -64,8 +68,29 @@ public class GameLogic: MonoBehaviour
             playerHand.Add(deck.Pop());
             dealerHand.Add(deck.Pop());
         }
+        dealerHand[0].faceup(false);
+        UpdateCards();
+        buttonHandler.Test();
 
-        // TODO: Dealer's second card must appear facedown
+        //TODO: Show buttons, add functionality
         
     }
+
+    void ClearCards(){ foreach(GameObject c in GameObject.FindGameObjectsWithTag("Card")) Destroy(c); }
+
+    void UpdateCards(){
+        float x = -playerHand.Count/2;
+        for(int i=0; i<playerHand.Count; ++i){
+            GameObject newCard = Instantiate(cardPrefab, new Vector3(x + i, playerHandObject.transform.position.y,0), Quaternion.identity, playerHandObject.transform);
+            newCard.GetComponent<SpriteRenderer>().sprite = playerHand[i].image;
+        }
+
+        x = -dealerHand.Count/2;
+        for(int i=0; i<dealerHand.Count; ++i){
+            GameObject newCard = Instantiate(cardPrefab, new Vector3(x + i, dealerHandObject.transform.position.y, 0), Quaternion.identity, dealerHandObject.transform);
+            newCard.GetComponent<SpriteRenderer>().sprite = dealerHand[i].image;
+        }
+    }
+
+    
 }
