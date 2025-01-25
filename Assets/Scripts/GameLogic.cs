@@ -13,6 +13,7 @@ public class GameLogic: MonoBehaviour
     public GameObject playerHandObject;
     public GameObject dealerHandObject;
 
+
     public int chips;
 
     void Start(){
@@ -26,6 +27,8 @@ public class GameLogic: MonoBehaviour
         InitDeck();
         deck = Shuffle(deck);
         StartRound();
+
+        // UIButton
     }
 
     void Update(){}
