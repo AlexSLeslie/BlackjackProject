@@ -151,7 +151,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 4804980388234336466, guid: b16c68047a8ecb547bca6af06a88cf07, type: 3}
   playerHandObject: {fileID: 706962231}
   dealerHandObject: {fileID: 207614952}
-  buttonHandler: {fileID: 1325520447}
+  buttonHandlerObject: {fileID: 1325520446}
   chips: 0
 --- !u!4 &206514415
 Transform:

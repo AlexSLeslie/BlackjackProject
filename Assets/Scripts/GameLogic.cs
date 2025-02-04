@@ -38,7 +38,7 @@ public class GameLogic: MonoBehaviour
     void Update(){}
 
     void InitDeck(){
-
+        // Iterate through a suit enum, then ranks of cards
         foreach(Card.Suit suit in System.Enum.GetValues(typeof(Card.Suit))){
             for(int i=1; i<14; ++i) deck.Push(new Card(suit, i));
         }
@@ -64,21 +64,38 @@ public class GameLogic: MonoBehaviour
     }
 
     void StartRound(){
+        // deal cards
         for(int i=0; i<2; ++i){
             playerHand.Add(deck.Pop());
             dealerHand.Add(deck.Pop());
         }
         dealerHand[0].faceup(false);
-        UpdateCards();
-        buttonHandler.Test();
 
-        //TODO: Show buttons, add functionality
-        
+        UpdateCards();
+        buttonHandler.ShowElement(ButtonHandler.Root.HIT_STAND);
+    }
+
+    // Called from ButtonHandler.OnButtonClick()
+    public void Hit(){
+        playerHand.Add(new Card(Card.Suit.HEARTS, 1));
+        // playerHand.Add(deck.Pop());
+        Debug.Log(SumHand(playerHand));
+        UpdateCards();
+        if(SumHand(playerHand) > 21) Bust();
+    }
+
+    void Bust(){
+        buttonHandler.HideElement(ButtonHandler.Root.HIT_STAND);
+        Debug.Log("Bust,,,,");
+        // TODO: Start new round, or show a "new round" button
+        // TODO: Add Stand Button func
     }
 
     void ClearCards(){ foreach(GameObject c in GameObject.FindGameObjectsWithTag("Card")) Destroy(c); }
 
+    // TODO: layer new cards over old ones
     void UpdateCards(){
+        ClearCards();
         float x = -playerHand.Count/2;
         for(int i=0; i<playerHand.Count; ++i){
             GameObject newCard = Instantiate(cardPrefab, new Vector3(x + i, playerHandObject.transform.position.y,0), Quaternion.identity, playerHandObject.transform);
@@ -90,6 +107,27 @@ public class GameLogic: MonoBehaviour
             GameObject newCard = Instantiate(cardPrefab, new Vector3(x + i, dealerHandObject.transform.position.y, 0), Quaternion.identity, dealerHandObject.transform);
             newCard.GetComponent<SpriteRenderer>().sprite = dealerHand[i].image;
         }
+    }
+
+    // Returns the value of a hand, factoring in aces as being worth either 11 or 1
+    int SumHand(List<Card> hand){
+        int sum = 0;
+        int aces = 0;
+
+        foreach(Card card in hand){
+            sum += card.Value();
+            if(card.Value() == 11) ++aces;
+        }
+
+        // Lower sum if hand contains aces, if necessary
+        if(sum > 21 && aces > 0){
+            while(aces > 0){
+                sum -= 10;
+                if(sum <= 21) return sum;
+                --aces;
+            }
+        }
+        return sum;
     }
 
     

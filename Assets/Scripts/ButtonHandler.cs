@@ -11,6 +11,7 @@ public class ButtonHandler : MonoBehaviour
     }
     public UIDocument HitStandDoc;
     public UIDocument TestDoc;
+    public GameLogic gameLogic;
 
     Dictionary<Root, VisualElement> roots;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,16 +34,21 @@ public class ButtonHandler : MonoBehaviour
     }
 
     void OnButtonClick(Button button){
-        Debug.Log($"- {button.name}");
+        Debug.Log($"{button.name}");
+
+        if(button.name == "HitButton")
+            gameLogic.Hit();
+        
+        
     }
 
-    public void HideElement(VisualElement visualElement){
-        visualElement.style.visibility = Visibility.Hidden;
-    }
+    public void HideElement(VisualElement visualElement){ visualElement.style.visibility = Visibility.Hidden; }
 
-    public void ShowElement(VisualElement visualElement){
-        visualElement.style.visibility = Visibility.Visible;
-    }
+    public void HideElement(Root r){ HideElement(roots[r]); }
+
+    public void ShowElement(VisualElement visualElement){ visualElement.style.visibility = Visibility.Visible; }
+
+    public void ShowElement(Root r){ ShowElement(roots[r]); }
 
     void Start()
     {

@@ -37,6 +37,21 @@ public class Card
 
     }
 
+    public int Value(){
+        switch(_rank){
+            case 1:
+                return 11;
+                
+            case 11:
+            case 12:
+            case 13:
+                return 10;
+            
+            default:
+                return _rank;
+        }
+    }
+
     // Image source https://code.google.com/archive/p/vector-playing-cards/ 
     public string imagePath(){
 
