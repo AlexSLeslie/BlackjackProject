@@ -31,11 +31,18 @@ public class Card
     public int rank { get => _rank; set => _rank = value; }
     public Sprite image { get => _image; set => _image = value; }
     
-    public void faceup(bool isFaceup){
-        _faceup = isFaceup;
-        _image = _faceup? Resources.Load<Sprite>(imagePath()) : Resources.Load<Sprite>(cardBack);
+    // public void faceup(bool isFaceup){
+    //     _faceup = isFaceup;
+    //     _image = _faceup? Resources.Load<Sprite>(imagePath()) : Resources.Load<Sprite>(cardBack);
 
-    }
+    // }
+
+    public bool faceup{ 
+        get { return _faceup; }
+        set { 
+            _faceup = value;
+            _image = value? Resources.Load<Sprite>(imagePath()) : Resources.Load<Sprite>(cardBack);
+        } }
 
     public int Value(){
         switch(_rank){

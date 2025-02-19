@@ -1,0 +1,4 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Label text="Label" name="DealerTotalLabel" style="bottom: -50%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%;" />
+    <engine:Label text="Label" name="PlayerTotalLabel" style="bottom: -75%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%;" />
+</engine:UXML>

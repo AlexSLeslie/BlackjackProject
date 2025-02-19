@@ -3,30 +3,39 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Linq;
 
+// TODO: Clean up OnEnable() with querybuilder code
+
 public class ButtonHandler : MonoBehaviour
 {
-    public enum Root{
-        HIT_STAND,
-        TEST
-    }
     public UIDocument HitStandDoc;
     public UIDocument TestDoc;
+    public UIDocument TotalDoc;
+
     public GameLogic gameLogic;
 
-    Dictionary<Root, VisualElement> roots;
+    Dictionary<string, VisualElement> roots;
+    Dictionary<string, Label> labels;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnEnable()
     {
-        roots = new Dictionary<Root, VisualElement>();
+        // Root visual elements added to dictionary for easier access later, ie when hiding all elements
+        roots = new Dictionary<string, VisualElement>();
+        labels = new Dictionary<string, Label>();
 
         var HitStandRoot =  HitStandDoc.rootVisualElement;
         HitStandRoot.Q<Button>("HitButton").clicked += () => OnButtonClick(HitStandRoot.Q<Button>("HitButton"));
         HitStandRoot.Q<Button>("StandButton").clicked += () => OnButtonClick(HitStandRoot.Q<Button>("StandButton"));
-        roots.Add(Root.HIT_STAND, HitStandRoot);
+        roots.Add("HitStand", HitStandRoot);
         
         var TestRoot = TestDoc.rootVisualElement;
         TestRoot.Q<Button>("TestButton").clicked += () => OnButtonClick(TestRoot.Q<Button>("TestButton"));
-        roots.Add(Root.TEST, TestRoot);
+        roots.Add("Test", TestRoot);
+
+        var TotalRoot = TotalDoc.rootVisualElement;
+        roots.Add("Total", TotalRoot);
+        labels.Add("DealerTotalLabel", TotalRoot.Q<Label>("DealerTotalLabel"));
+        labels.Add("PlayerTotalLabel", TotalRoot.Q<Label>("PlayerTotalLabel"));
+        
 
         foreach(VisualElement visualElement in roots.Values.ToList())
             HideElement(visualElement);
@@ -38,17 +47,22 @@ public class ButtonHandler : MonoBehaviour
 
         if(button.name == "HitButton")
             gameLogic.Hit();
+
+        if(button.name == "StandButton")
+            gameLogic.Stand();
         
         
     }
 
+    public void SetLabelText(string label, string text){ labels[label].text = text; }
+
     public void HideElement(VisualElement visualElement){ visualElement.style.visibility = Visibility.Hidden; }
 
-    public void HideElement(Root r){ HideElement(roots[r]); }
+    public void HideElement(string r){ HideElement(roots[r]); }
 
     public void ShowElement(VisualElement visualElement){ visualElement.style.visibility = Visibility.Visible; }
 
-    public void ShowElement(Root r){ ShowElement(roots[r]); }
+    public void ShowElement(string r){ ShowElement(roots[r]); }
 
     void Start()
     {

@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-
+/** 
+TODO: 
+    - What to do after round has been won/lost
+    - Refactor buttonHandler as UIHandler  
+*/
 public class GameLogic: MonoBehaviour
 {
     public Stack<Card> deck;
@@ -69,23 +73,47 @@ public class GameLogic: MonoBehaviour
             playerHand.Add(deck.Pop());
             dealerHand.Add(deck.Pop());
         }
-        dealerHand[0].faceup(false);
+        dealerHand[0].faceup = false;
 
         UpdateCards();
-        buttonHandler.ShowElement(ButtonHandler.Root.HIT_STAND);
+        buttonHandler.ShowElement("HitStand");
+        buttonHandler.ShowElement("Total");
     }
 
     // Called from ButtonHandler.OnButtonClick()
     public void Hit(){
-        playerHand.Add(new Card(Card.Suit.HEARTS, 1));
-        // playerHand.Add(deck.Pop());
+        playerHand.Add(deck.Pop());
         Debug.Log(SumHand(playerHand));
         UpdateCards();
         if(SumHand(playerHand) > 21) Bust();
     }
 
+    public void Stand(){
+        // Dealer must draw on 16 and stand on 17
+        dealerHand[0].faceup = true;
+        while(SumHand(dealerHand) < 17){
+            dealerHand.Add(deck.Pop());
+            UpdateCards();
+        }
+
+        if(SumHand(dealerHand) > 21){
+            // ties are won by dealer rn
+            if(SumHand(dealerHand) < SumHand(playerHand))
+                PlayerWon();
+            else DealerWon();
+        }
+    }
+
+    public void PlayerWon(){
+        Debug.Log("PlayerWon()");
+    }
+
+    public void DealerWon(){
+        Debug.Log("DealerWon()");
+    }
+
     void Bust(){
-        buttonHandler.HideElement(ButtonHandler.Root.HIT_STAND);
+        buttonHandler.HideElement("HitStand");
         Debug.Log("Bust,,,,");
         // TODO: Start new round, or show a "new round" button
         // TODO: Add Stand Button func
@@ -107,6 +135,9 @@ public class GameLogic: MonoBehaviour
             GameObject newCard = Instantiate(cardPrefab, new Vector3(x + i, dealerHandObject.transform.position.y, 0), Quaternion.identity, dealerHandObject.transform);
             newCard.GetComponent<SpriteRenderer>().sprite = dealerHand[i].image;
         }
+
+        buttonHandler.SetLabelText("DealerTotalLabel", dealerHand[0].faceup? SumHand(dealerHand).ToString(): "?");
+        buttonHandler.SetLabelText("PlayerTotalLabel", SumHand(playerHand).ToString());
     }
 
     // Returns the value of a hand, factoring in aces as being worth either 11 or 1
