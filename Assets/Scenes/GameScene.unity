@@ -854,7 +854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitStandDoc: {fileID: 1010527245}
   TestDoc: {fileID: 1018392322}
-  gameLogic: {fileID: 0}
+  TotalDoc: {fileID: 934611730}
+  gameLogic: {fileID: 206514414}
 --- !u!4 &1325520448
 Transform:
   m_ObjectHideFlags: 0

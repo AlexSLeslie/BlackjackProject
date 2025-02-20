@@ -5,6 +5,7 @@ using System.Linq;
 /** 
 TODO: 
     - What to do after round has been won/lost
+    - Add functionality to chips label
     - Refactor buttonHandler as UIHandler  
 */
 public class GameLogic: MonoBehaviour
@@ -23,23 +24,32 @@ public class GameLogic: MonoBehaviour
     public int chips;
 
     void Start(){
+        buttonHandler = buttonHandlerObject.GetComponent<ButtonHandler>();
+        chips = 500;
 
+        Init();
+    }
+
+    void Update(){}
+    
+    void Init(){
         deck = new Stack<Card>();
         playerHand = new List<Card>();
         dealerHand = new List<Card>();
 
-        buttonHandler = buttonHandlerObject.GetComponent<ButtonHandler>();
-
-        chips = 500;
-
         InitDeck();
         deck = Shuffle(deck);
         StartRound();
-
-        // UIButton
     }
 
-    void Update(){}
+    // Wrapper for Init() when starting a new round
+    public void Restart(){
+        Debug.Log("Restart()");
+        buttonHandler.HideElement("Restart");
+        
+        Init();
+
+    }
 
     void InitDeck(){
         // Iterate through a suit enum, then ranks of cards
@@ -96,27 +106,28 @@ public class GameLogic: MonoBehaviour
             UpdateCards();
         }
 
-        if(SumHand(dealerHand) > 21){
-            // ties are won by dealer rn
-            if(SumHand(dealerHand) < SumHand(playerHand))
-                PlayerWon();
-            else DealerWon();
-        }
+        // Ties currently won by dealer
+        if(SumHand(dealerHand) > 21 || SumHand(playerHand) > SumHand(dealerHand))
+            PlayerWon();
+        else DealerWon();
     }
 
-    public void PlayerWon(){
+    void PlayerWon(){
         Debug.Log("PlayerWon()");
+        buttonHandler.HideAll();
+        buttonHandler.ShowElement("Restart");
     }
 
-    public void DealerWon(){
+    void DealerWon(){
         Debug.Log("DealerWon()");
+        buttonHandler.HideAll();
+        buttonHandler.ShowElement("Restart");
     }
 
     void Bust(){
         buttonHandler.HideElement("HitStand");
         Debug.Log("Bust,,,,");
-        // TODO: Start new round, or show a "new round" button
-        // TODO: Add Stand Button func
+        DealerWon();
     }
 
     void ClearCards(){ foreach(GameObject c in GameObject.FindGameObjectsWithTag("Card")) Destroy(c); }

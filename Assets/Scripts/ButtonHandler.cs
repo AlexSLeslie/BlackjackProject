@@ -8,7 +8,7 @@ using System.Linq;
 public class ButtonHandler : MonoBehaviour
 {
     public UIDocument HitStandDoc;
-    public UIDocument TestDoc;
+    public UIDocument RestartDoc;
     public UIDocument TotalDoc;
 
     public GameLogic gameLogic;
@@ -27,31 +27,39 @@ public class ButtonHandler : MonoBehaviour
         HitStandRoot.Q<Button>("StandButton").clicked += () => OnButtonClick(HitStandRoot.Q<Button>("StandButton"));
         roots.Add("HitStand", HitStandRoot);
         
-        var TestRoot = TestDoc.rootVisualElement;
-        TestRoot.Q<Button>("TestButton").clicked += () => OnButtonClick(TestRoot.Q<Button>("TestButton"));
-        roots.Add("Test", TestRoot);
+        var RestartRoot = RestartDoc.rootVisualElement;
+        RestartRoot.Q<Button>("RestartButton").clicked += () => OnButtonClick(RestartRoot.Q<Button>("RestartButton"));
+        roots.Add("Restart", RestartRoot);
 
         var TotalRoot = TotalDoc.rootVisualElement;
         roots.Add("Total", TotalRoot);
         labels.Add("DealerTotalLabel", TotalRoot.Q<Label>("DealerTotalLabel"));
         labels.Add("PlayerTotalLabel", TotalRoot.Q<Label>("PlayerTotalLabel"));
         
-
-        foreach(VisualElement visualElement in roots.Values.ToList())
-            HideElement(visualElement);
+        HideAll();
+        
 
     }
 
     void OnButtonClick(Button button){
-        Debug.Log($"{button.name}");
-
+        Debug.Log(button.name + " clicked");
+        
         if(button.name == "HitButton")
             gameLogic.Hit();
 
         if(button.name == "StandButton")
             gameLogic.Stand();
+
+        if(button.name == "RestartButton")
+            gameLogic.Restart();
         
         
+    }
+
+    // Hide all visual elements
+    public void HideAll(){ 
+        foreach(VisualElement visualElement in roots.Values.ToList())
+            HideElement(visualElement);
     }
 
     public void SetLabelText(string label, string text){ labels[label].text = text; }
