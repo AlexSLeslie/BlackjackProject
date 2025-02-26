@@ -1,4 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Label text="Label" name="DealerTotalLabel" style="bottom: -50%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%;" />
-    <engine:Label text="Label" name="PlayerTotalLabel" style="bottom: -75%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%;" />
+    <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+        <engine:VisualElement style="flex-grow: 1; flex-direction: column; align-items: stretch;">
+            <engine:Label text="Label" name="DealerTotalLabel" style="bottom: -50%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%;" />
+            <engine:Label text="Label" name="PlayerTotalLabel" style="bottom: -75%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: 5%; width: 30%;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 1; align-self: auto; justify-content: flex-start; align-items: auto; flex-wrap: nowrap; flex-direction: column;">
+            <engine:Label text="Label" name="ChipsLabel" style="bottom: -82%; -unity-font-style: bold; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); font-size: 28px; left: -5%; width: 164px; right: auto; align-self: flex-end; justify-content: flex-start; flex-direction: column; flex-wrap: nowrap; white-space: nowrap; -unity-text-align: lower-left;" />
+            <engine:IntegerField label="Bet:" value="0" name="BetField" style="bottom: -60%; position: relative; font-size: 28px; color: rgb(255, 255, 255); -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>

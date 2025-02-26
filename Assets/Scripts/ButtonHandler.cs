@@ -35,6 +35,7 @@ public class ButtonHandler : MonoBehaviour
         roots.Add("Total", TotalRoot);
         labels.Add("DealerTotalLabel", TotalRoot.Q<Label>("DealerTotalLabel"));
         labels.Add("PlayerTotalLabel", TotalRoot.Q<Label>("PlayerTotalLabel"));
+        labels.Add("ChipsLabel", TotalRoot.Q<Label>("ChipsLabel"));
         
         HideAll();
         
@@ -61,6 +62,8 @@ public class ButtonHandler : MonoBehaviour
         foreach(VisualElement visualElement in roots.Values.ToList())
             HideElement(visualElement);
     }
+
+    public int GetBet(){ return TotalDoc.rootVisualElement.Q<IntegerField>("BetField").value; }
 
     public void SetLabelText(string label, string text){ labels[label].text = text; }
 

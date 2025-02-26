@@ -783,7 +783,7 @@ GameObject:
   - component: {fileID: 1018392323}
   - component: {fileID: 1018392322}
   m_Layer: 5
-  m_Name: TestDoc
+  m_Name: RestartDoc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitStandDoc: {fileID: 1010527245}
-  TestDoc: {fileID: 1018392322}
+  RestartDoc: {fileID: 1018392322}
   TotalDoc: {fileID: 934611730}
   gameLogic: {fileID: 206514414}
 --- !u!4 &1325520448

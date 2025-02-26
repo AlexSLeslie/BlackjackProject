@@ -4,8 +4,9 @@ using System.Linq;
 
 /** 
 TODO: 
+    - ButtonHandler.HideButtons()
     - What to do after round has been won/lost
-    - Add functionality to chips label
+    - Find better spot to subtract bet from total
     - Refactor buttonHandler as UIHandler  
 */
 public class GameLogic: MonoBehaviour
@@ -22,6 +23,7 @@ public class GameLogic: MonoBehaviour
     private ButtonHandler buttonHandler;
 
     public int chips;
+    private int currentBet;
 
     void Start(){
         buttonHandler = buttonHandlerObject.GetComponent<ButtonHandler>();
@@ -33,6 +35,7 @@ public class GameLogic: MonoBehaviour
     void Update(){}
     
     void Init(){
+        
         deck = new Stack<Card>();
         playerHand = new List<Card>();
         dealerHand = new List<Card>();
@@ -78,6 +81,8 @@ public class GameLogic: MonoBehaviour
     }
 
     void StartRound(){
+        currentBet = buttonHandler.GetBet();
+        chips -= currentBet;
         // deal cards
         for(int i=0; i<2; ++i){
             playerHand.Add(deck.Pop());
@@ -88,6 +93,8 @@ public class GameLogic: MonoBehaviour
         UpdateCards();
         buttonHandler.ShowElement("HitStand");
         buttonHandler.ShowElement("Total");
+
+        
     }
 
     // Called from ButtonHandler.OnButtonClick()
@@ -114,6 +121,7 @@ public class GameLogic: MonoBehaviour
 
     void PlayerWon(){
         Debug.Log("PlayerWon()");
+        chips += (int)Mathf.Floor(currentBet * 1.5f);
         buttonHandler.HideAll();
         buttonHandler.ShowElement("Restart");
     }
@@ -149,6 +157,7 @@ public class GameLogic: MonoBehaviour
 
         buttonHandler.SetLabelText("DealerTotalLabel", dealerHand[0].faceup? SumHand(dealerHand).ToString(): "?");
         buttonHandler.SetLabelText("PlayerTotalLabel", SumHand(playerHand).ToString());
+        buttonHandler.SetLabelText("ChipsLabel", "Chips: " + chips.ToString());
     }
 
     // Returns the value of a hand, factoring in aces as being worth either 11 or 1
