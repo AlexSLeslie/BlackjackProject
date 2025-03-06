@@ -4,9 +4,8 @@ using System.Linq;
 
 /** 
 TODO: 
-    - ButtonHandler.HideButtons()
     - What to do after round has been won/lost
-    - Find better spot to subtract bet from total
+    - Possibly combine Init() and Restart()
     - Refactor buttonHandler as UIHandler  
 */
 public class GameLogic: MonoBehaviour
@@ -23,13 +22,16 @@ public class GameLogic: MonoBehaviour
     private ButtonHandler buttonHandler;
 
     public int chips;
-    private int currentBet;
+    // private int currentBet;
 
     void Start(){
         buttonHandler = buttonHandlerObject.GetComponent<ButtonHandler>();
         chips = 500;
 
-        Init();
+        buttonHandler.HideElement("HitStand");
+        buttonHandler.ShowElement("Restart");
+        buttonHandler.ShowElement("Total");
+        
     }
 
     void Update(){}
@@ -49,6 +51,7 @@ public class GameLogic: MonoBehaviour
     public void Restart(){
         Debug.Log("Restart()");
         buttonHandler.HideElement("Restart");
+        buttonHandler.EnableBet(false);
         
         Init();
 
@@ -81,8 +84,8 @@ public class GameLogic: MonoBehaviour
     }
 
     void StartRound(){
-        currentBet = buttonHandler.GetBet();
-        chips -= currentBet;
+        chips -= buttonHandler.GetBet();
+        
         // deal cards
         for(int i=0; i<2; ++i){
             playerHand.Add(deck.Pop());
@@ -121,25 +124,32 @@ public class GameLogic: MonoBehaviour
 
     void PlayerWon(){
         Debug.Log("PlayerWon()");
-        chips += (int)Mathf.Floor(currentBet * 1.5f);
-        buttonHandler.HideAll();
-        buttonHandler.ShowElement("Restart");
+        chips += (int)Mathf.Floor(buttonHandler.GetBet() * 1.5f);
+        EndRound();
     }
 
     void DealerWon(){
         Debug.Log("DealerWon()");
+        EndRound();
+    }
+
+    void EndRound(){
         buttonHandler.HideAll();
+        buttonHandler.ShowElement("Total");
         buttonHandler.ShowElement("Restart");
+        buttonHandler.EnableBet(true);
+        UpdateLabels();
     }
 
     void Bust(){
-        buttonHandler.HideElement("HitStand");
+        // buttonHandler.HideElement("HitStand");
         Debug.Log("Bust,,,,");
         DealerWon();
     }
 
     void ClearCards(){ foreach(GameObject c in GameObject.FindGameObjectsWithTag("Card")) Destroy(c); }
-
+    
+    // Also updates labels
     // TODO: layer new cards over old ones
     void UpdateCards(){
         ClearCards();
@@ -155,6 +165,10 @@ public class GameLogic: MonoBehaviour
             newCard.GetComponent<SpriteRenderer>().sprite = dealerHand[i].image;
         }
 
+        UpdateLabels();
+    }
+
+    void UpdateLabels(){
         buttonHandler.SetLabelText("DealerTotalLabel", dealerHand[0].faceup? SumHand(dealerHand).ToString(): "?");
         buttonHandler.SetLabelText("PlayerTotalLabel", SumHand(playerHand).ToString());
         buttonHandler.SetLabelText("ChipsLabel", "Chips: " + chips.ToString());

@@ -33,6 +33,9 @@ public class ButtonHandler : MonoBehaviour
 
         var TotalRoot = TotalDoc.rootVisualElement;
         roots.Add("Total", TotalRoot);
+
+
+        // Theres probably a more elegant way to do this but ;-;
         labels.Add("DealerTotalLabel", TotalRoot.Q<Label>("DealerTotalLabel"));
         labels.Add("PlayerTotalLabel", TotalRoot.Q<Label>("PlayerTotalLabel"));
         labels.Add("ChipsLabel", TotalRoot.Q<Label>("ChipsLabel"));
@@ -52,10 +55,17 @@ public class ButtonHandler : MonoBehaviour
             gameLogic.Stand();
 
         if(button.name == "RestartButton")
-            gameLogic.Restart();
+            if(GetBet() <= gameLogic.chips){
+                button.text = "Play";
+                gameLogic.Restart();
+            }
+            else button.text = "Not enough chips!";
         
         
     }
+
+
+    public void EnableBet(bool value){ TotalDoc.rootVisualElement.Q<IntegerField>("BetField").SetEnabled(value); } 
 
     // Hide all visual elements
     public void HideAll(){ 
