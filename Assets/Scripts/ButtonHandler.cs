@@ -7,9 +7,10 @@ using System.Linq;
 
 public class ButtonHandler : MonoBehaviour
 {
-    public UIDocument HitStandDoc;
-    public UIDocument RestartDoc;
-    public UIDocument TotalDoc;
+    public UIDocument HitStandDoc, RestartDoc, TotalDoc, DodgeDoc;
+    // public UIDocument RestartDoc;
+    // public UIDocument TotalDoc;
+    // public UIDocument 
 
     public GameLogic gameLogic;
 
@@ -23,16 +24,20 @@ public class ButtonHandler : MonoBehaviour
         labels = new Dictionary<string, Label>();
 
         var HitStandRoot =  HitStandDoc.rootVisualElement;
-        HitStandRoot.Q<Button>("HitButton").clicked += () => OnButtonClick(HitStandRoot.Q<Button>("HitButton"));
-        HitStandRoot.Q<Button>("StandButton").clicked += () => OnButtonClick(HitStandRoot.Q<Button>("StandButton"));
+        AddOnButtonClick(HitStandRoot, "HitButton");
+        AddOnButtonClick(HitStandRoot, "StandButton");
         roots.Add("HitStand", HitStandRoot);
         
         var RestartRoot = RestartDoc.rootVisualElement;
-        RestartRoot.Q<Button>("RestartButton").clicked += () => OnButtonClick(RestartRoot.Q<Button>("RestartButton"));
+        AddOnButtonClick(RestartRoot, "RestartButton");
         roots.Add("Restart", RestartRoot);
 
         var TotalRoot = TotalDoc.rootVisualElement;
         roots.Add("Total", TotalRoot);
+
+        var DodgeRoot= DodgeDoc.rootVisualElement;
+        AddOnButtonClick(DodgeRoot, "DodgeLeftButton");
+        roots.Add("Dodge", DodgeRoot);
 
 
         // Theres probably a more elegant way to do this but ;-;
@@ -45,6 +50,9 @@ public class ButtonHandler : MonoBehaviour
 
     }
 
+    // Cleans up long repeated line
+    void AddOnButtonClick(VisualElement root, string button){ root.Q<Button>(button).clicked += () => OnButtonClick(root.Q<Button>(button)); }
+
     void OnButtonClick(Button button){
         Debug.Log(button.name + " clicked");
         
@@ -56,7 +64,7 @@ public class ButtonHandler : MonoBehaviour
 
         if(button.name == "RestartButton")
             if(GetBet() <= gameLogic.chips){
-                button.text = "Play";
+                button.text = "Continue";
                 gameLogic.Restart();
             }
             else button.text = "Not enough chips!";
@@ -65,6 +73,7 @@ public class ButtonHandler : MonoBehaviour
     }
 
 
+    // Allow or disallow changing of the bet amount during gameplay
     public void EnableBet(bool value){ TotalDoc.rootVisualElement.Q<IntegerField>("BetField").SetEnabled(value); } 
 
     // Hide all visual elements

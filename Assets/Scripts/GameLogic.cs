@@ -4,7 +4,6 @@ using System.Linq;
 
 /** 
 TODO: 
-    - What to do after round has been won/lost
     - Possibly combine Init() and Restart()
     - Refactor buttonHandler as UIHandler  
 */
